@@ -1,0 +1,21 @@
+ColNo 	City
+4	Phoenix, Arizona
+5	Los Angeles, California
+6	San Deigo, California
+7	San Francisco, California
+8	Denver, Colorado
+9	Washington DC, Maryland
+10	Miami, Florida
+11	Tampa, Florida
+12	Atlanta, Georgia
+13	Chicago, Illinois
+14	Boston, Massachusetts
+15	Detroit, Michigan
+16	Minneapolis, Minnesota
+17	Charlotte, North Carolina
+18	Las Vegas, Nevada
+19	New York, New York
+20	Cleveland, Ohio
+21	Portland, Oregon
+22	Seattle, Washington
+23	Composite 10 Index
