@@ -1,0 +1,47 @@
+---
+title       : Home Price Index Forecasting
+subtitle    : Time Series Modelling
+author      : Mandar Bisne
+job         : Course Project
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Home Price Index Forecasting using Time Series Modelling
+
+This presentation is being created as part of the peer assessment for the coursera developing data products class. The assignment is geared toward ensuring the following concepts were well understood by the students
+
+The objective of the project is to predict the Home Price Index (HPI) for the year 2010 on a monthly basis for 20 metropolitan cities in United States and Composite 10 Index, using Time Series Modelling (ARIMA)
+
+---
+
+## The Application
+
+To display the understanding of using shiny to build an application, a simple application has been developed and deployed at: https://mbisne.shinyapps.io/HousingData/
+
+
+The application allows user to select the Cit, State or composite 10 index and display the results for 2010 in a tabular format 
+
+---
+
+## The Data
+
+This application is based on S&P/Case - Shiller Home Price Index starting from January 1991 to June 2009
+
+Data set can be obtained at the following location (http://wiki.stat.ucla.edu/socr/index.php?title=SOCR_Data_Dinov_091609_SnP_HomePriceIndex&oldid=9369) and processed for the project
+
+---
+
+## The Data
+
+```{r} 
+HousingData <- read.table(file = 'Data.txt', header = TRUE, sep = '\t')
+head(HousingData)
+```
+
+
+
