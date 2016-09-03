@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Price Index Forecasting</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Home Price Index Forecasting">
+  <meta name="author" content="Mandar Bisne">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Home Price Index Forecasting</h1>
+    <h2>Time Series Modelling</h2>
+    <p>Mandar Bisne<br/>Course Project</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Home Price Index Forecasting using Time Series Modelling</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This presentation is being created as part of the peer assessment for the coursera developing data products class. The assignment is geared toward ensuring the following concepts were well understood by the students</p>
+
+<p>The objective of the project is to predict the Home Price Index (HPI) for the year 2010 on a monthly basis for 20 metropolitan cities in United States and Composite 10 Index, using Time Series Modelling (ARIMA)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>The Application</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>To display the understanding of using shiny to build an application, a simple application has been developed and deployed at: <a href="https://mbisne.shinyapps.io/HousingData/">https://mbisne.shinyapps.io/HousingData/</a></p>
+
+<p>The application allows user to select the Cit, State or composite 10 index and display the results for 2010 in a tabular format </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>The Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This application is based on S&amp;P/Case - Shiller Home Price Index starting from January 1991 to June 2009</p>
+
+<p>Data set can be obtained at the following location (<a href="http://wiki.stat.ucla.edu/socr/index.php?title=SOCR_Data_Dinov_091609_SnP_HomePriceIndex&amp;oldid=9369">http://wiki.stat.ucla.edu/socr/index.php?title=SOCR_Data_Dinov_091609_SnP_HomePriceIndex&amp;oldid=9369</a>) and processed for the project</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>The Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">HousingData &lt;- read.table(file = &#39;Data.txt&#39;, header = TRUE, sep = &#39;\t&#39;)
+head(HousingData)
+</code></pre>
+
+<pre><code>##   Index Year    Month AZ.Phoenix CA.LosAngeles CA.SanDiego CA.SanFrancisco
+## 1     1 1991  January      65.26         95.28       83.13           71.17
+## 2     2 1991 February      65.29         94.12       81.87           70.27
+## 3     3 1991    March      64.60         92.83       80.89           69.56
+## 4     4 1991    April      64.35         92.83       80.73           69.46
+## 5     5 1991      May      64.37         93.37       81.41           70.13
+## 6     6 1991     June      64.88         94.25       82.20           70.83
+##   CO.Denver DC.Washington FL.Miami FL.Tampa GA.Atlanta IL.Chicago
+## 1     48.67         89.38    79.08    81.75      69.61      70.04
+## 2     48.68         88.80    78.55    81.76      69.17      70.50
+## 3     48.85         87.59    78.44    81.43      69.05      70.63
+## 4     49.20         87.56    78.55    81.46      69.40      71.09
+## 5     49.51         88.61    77.95    81.33      69.69      71.36
+## 6     50.09         89.28    78.49    81.77      70.14      71.66
+##   MA.Boston MI.Detroit MN.Minneapolis NC.Charlotte NV.LasVegas NY.NewYork
+## 1     64.97      58.24          64.21        73.32       80.96      74.59
+## 2     64.17      57.76          64.20        73.26       81.58      73.69
+## 3     63.57      57.63          64.19        72.75       81.65      72.87
+## 4     63.35      57.85          64.30        72.88       81.67      72.29
+## 5     63.84      58.36          64.75        73.26       82.02      72.63
+## 6     64.25      58.90          64.95        73.49       81.91      73.50
+##   OH.Cleveland OR.Portland WA.Seattle Composite.10
+## 1        68.24       56.53      65.53        78.53
+## 2        67.96       56.94      64.60        77.77
+## 3        68.18       58.03      64.47        77.00
+## 4        69.10       58.39      65.09        76.86
+## 5        69.92       58.90      66.03        77.31
+## 6        70.55       59.54      66.68        78.02
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Home Price Index Forecasting using Time Series Modelling'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The Application'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='The Data'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='The Data'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
